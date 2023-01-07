@@ -1,0 +1,54 @@
+This report was written in May of 2022 and documents the exam project for the elective course "Program Verification" taken on a Bachelor's level at the IT University of Copenhagen. The project has been performed under the supervision of course teacher Jesper Bengtson and ITU associate professor Alessandro Bruni over the course of four weeks. 
+\\
+\\
+%New version. I don't think our imp is a version of the wiki IMP and we ended up not abandoning infotheo after all. I try to set the narrative of monty hall -> two coins -> monty hall
+In this project we attempt to extend the Coq Proof Assistant\footnote{\textcite{CoqIntro}} so it is able to handle probability and prove the outcome of a small, probabilistic problem. This requires the implementation of both a small, imperative language as well as a Hoare logic\footnote{\textcite{SF2}}, which both need to be expanded to take probabilities, and possibly distributions over several states, into account. Based on this, we will be able to write a small program, which corresponds to the case of flipping two fair coins, and prove the already known and accepted result. 
+
+The project was at first conceived as trying to solve the famous Monty Hall problem\footnote{\textcite{MontyHallWiki}} with the Coq Proof Assistant. Due to unexpected setbacks during the last weeks of the project, the goal was re-scoped to focus on the case of two coins instead, with the original intent still acting as the motivation for looking at working with probabilities in Coq. 
+
+\\
+\\
+%Old version
+%In this project we attempt to extend the Coq Proof Assistant1 to be able to handle probability
+%and prove the outcome of tossing two fair coins. 
+%Imp\footnote{\textcite{ImpWiki}}, in order to be able to handle probabilities and distributions. Subsequently, a Hoare Logic\footnote{\textcite{SF2}} expansion taking probability into account was expressed in this language, which was finally used to both define and prove the Two Coin problem, confirming the already known and accepted result.
+\\
+\\
+%The project was conceived as trying to solve the famous Monty Hall problem\footnote{\textcite{MontyHallWiki}} with the Coq Proof Assistant. The idea too was to extend the language for probability distribution, but using the existing \textit{infotheo} library \textit{\footnote{\textcite{infotheo}}} for the extension and Hoare Logic instead. Unfortunately, during the last weeks of the project, using the \textit{infotheo} library for the extension proved to be beyond both the scope and time-frame of the project, thus leaving the group to re-scope and re-focus the project to the simpler Two Coins problem.
+\\
+\\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%OLD
+%In this project we attempt to extend the Coq Proof Assistant\footnote{\textcite{CoqIntro}} to be able to handle probability and prove the outcome of tossing two fair coins. This requires extending the simple, imperative language, Imp\footnote{\textcite{ImpWiki}}, in order to be able to handle probabilities and distributions. Subsequently, a Hoare Logic\footnote{\textcite{SF2}} expansion taking probability into account was expressed in this language, which was finally used to both define and prove the Two Coin problem, confirming the already known and accepted result.% 
+\\
+\\
+%The project was conceived as trying to solve the famous Monty Hall problem\footnote{\textcite{MontyHallWiki}} with the Coq Proof Assistant. The idea too was to extend the language for probability distribution, but using the existing \textit{infotheo} library \textit{\footnote{\textcite{infotheo}}} for the extension and Hoare Logic instead. Unfortunately, during the last weeks of the project, using the \textit{infotheo} library for the extension proved to be beyond both the scope and time-frame of the project, thus leaving the group to re-scope and re-focus the project to the simpler Two Coins problem.%
+
+
+
+
+%AN ATTEMPT TO INTRODUCE THE PROBLEM EARLIER%
+%The project was conceived as trying to solve the famous Monty Hall problem \textbf{SOURCE} with the Coq Proof Assistant. This required extending the a simple, imperative language, with the use of the existing infotheo library \textbf{SOURCE}, in order to be able to express and handle probabilities and distributions. Unfortunately, this turned out to be far more complicated and time-consuming than expected, thus exceeding the time and the scope available for this project.%
+
+
+
+
+
+
+
+%THE OLD ONE%
+%The project was conceived as trying to solve the famous Monty Hall problem \textbf{SOURCE} with the Coq proof assistant, which requires extending the language in order to be able to express and handle probabilites and distributions. To do this, we needed to use the existing infotheo library \textbf{SOURCE} to build the necessary parts of a very simple, imperative language. This language has then in turned been used to formulate and prove extended versions of the Hoare logic triplets, which have been expanded into quadrouplets in order to take probability into account. Finally, these Hoare quadruplets have been used to both define and proove the Monty Hall problem, confirming the already known and accepted result.%
