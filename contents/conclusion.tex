@@ -1,7 +1,0 @@
-
-
-In this project we have implemented a small, imperative language based on an existing version \footnote{\textcite{SF1}} and expanded it to be able to handle distributions over states and not just single states. This was done to support the implementation of a probabilistic Hoare logic, which was attempted based on two different approaches.
-
-The first approach is based on an implementation made for a different system\footnote{\textcite{HoareSlides}}, where the classic Hoare triplet\footnote{\textcite{SF2}} is expanded to a quadruplet with a bounding probability. This first approach was abandoned when it became clear, that this system would not work with the necessary types imported from the \texttt{infotheo} library.
-
-The second approach was based on a PhD dissertation\footnote{\textcite{PHdProbExtensions}}, which expands the pre- and postconditions of the classic Hoare triplet to be statements with a known probability. With this approach it was possible to state a small program, which corresponds to the flipping of two coins, as well as the lemmas necessary to prove the result of this true. These results can be further strengthened through proving of the stated lemmas, and may be expanded upon in the future to cover more interesting cases of probability, like the Monty Hall problem.  
