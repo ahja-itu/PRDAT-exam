@@ -151,6 +151,7 @@ word* readfile(char* filename);
 #endif
 
 #define CONSTAG 0
+#define STACKTAG 1
 
 // Heap size in words
 
@@ -195,6 +196,10 @@ word *freelist;
 #define CDR 29
 #define SETCAR 30
 #define SETCDR 31
+#define CREATESTACK 32
+#define PUSHSTACK 33
+#define POPSTACK 34
+#define PRINTSTACK 35
 
 #define STACKSIZE 1000
 
@@ -237,6 +242,10 @@ void printInstruction(word p[], word pc) {
   case CDR:    printf("CDR"); break;
   case SETCAR: printf("SETCAR"); break;
   case SETCDR: printf("SETCDR"); break;
+  case CREATESTACK: printf("CREATESTACK"); break;
+  case PUSHSTACK:   printf("PUSHSTACK"); break;
+  case POPSTACK:    printf("POPSTACK"); break;
+  case PRINTSTACK:  printf("PRINTSTACK"); break;
   default:     printf("<unknown>"); break;
   }
 }
@@ -378,6 +387,92 @@ int execcode(word p[], word s[], word iargs[], int iargc, int /* boolean */ trac
       word v = (word)s[sp--];
       word* p = (word*)s[sp];
       p[2] = v;
+    } break;
+    case CREATESTACK: {
+      // Aflæs den ønskede stak størrelse
+      word stack_size = Untag((word) s[sp]);
+
+      // Fejlhåndtering for størrelser på stakke som er negative
+      // Diskussion: Kan en stak på størrelse 0 overhovedet bruges til noget spændende?
+      if (stack_size < 0) {
+        printf("Cannot allocate stack with negative capacity (%d)\n", stack_size);
+        return -1;
+      }
+
+      // Alloker hukommelse til stakken, hvor vi skal huske at have plads til de første
+      // tre pladser til header, N og top
+      word* p = allocate(STACKTAG, stack_size + 3, s, sp);
+
+      // Nu "prepper" vi stakken
+      p[1] = Tag(stack_size); // N
+      p[2] = Tag(0); // top
+      
+      // Sætter alle værdierne på stakken til 0, og vi husker at tagge
+      for (int i = 0; i < stack_size; i++) {
+        p[3+i] = Tag(0);
+      }
+
+      // Opdater program stakken, erstat størrelsen med en pointer til stakken
+      s[sp] = (word) p;
+    } break;
+    case PUSHSTACK: {
+      // Læs værdien v og addresse pointeren p
+      word v = Untag((word) s[sp]);
+      word* p = (word*) s[--sp]; // im not sure if im clever or stupid for doing pre increment
+
+      // Aflæs stakkens størrelse og "offsettet" på det øverste element
+      word size = Untag(p[1]);
+      word top = Untag(p[2]);
+
+      if (top == size) {
+        printf("Could not push to a full stack! Size: %d", size);
+        return -1;
+      }
+
+      // Sæt det nye topelement to værdien v
+      p[++top + 2] = Tag(v);
+
+      // Opdater "offsettet" til top elementet
+      p[2] = Tag(top);
+    } break;
+    case POPSTACK: {
+      // Indsæt pointeren til vores heap stak
+      word* p = (word*) s[sp];
+
+      // aflæs "offsettet" til det øverste element
+      word top = Untag(p[2]);
+
+      // Check to see if the stack is empty before popping
+      if (top < 1) {
+        printf("Attempted to pop from an empty stack!\n");
+        return -1;
+      }
+
+      // Aflæs det øverste element fra stakken, hvor vi bruger offset plus
+      // et offset på 2 for at læse forbi vores "bogholder"-værdier (index [0-2])
+      word v = Untag((word) p[top + 2]);
+      s[sp] = v;
+      
+      // Juster offsettet til det øverste element, siden at vi har fjernet
+      // en værdi fra stakken
+      p[2] = Tag(--top);
+    } break;
+    case PRINTSTACK: {
+      // Aflæs pointeren til vores heap stak
+      word* p = (word*) s[sp];
+
+      // aflæs dets totale størrelse og offsettet
+      word size = Untag(p[1]);
+      word top =  Untag(p[2]);
+
+      // Begynd at skrive stak "tracen" med total størrelse og antal elementer i det pt.
+      printf("STACK(%d, %d)=[ ", size, top);
+      
+      // Udskrive r alle værdierne på vores heap stak
+      for (int i = 0; i < top; i++) {
+        printf("%d ", Untag(p[3+i]));
+      }
+      printf("]\n"); // Lukker formatteringen hvorend brugeren læser det
     } break;
     default:
       printf("Illegal instruction " WORD_FMT " at address " WORD_FMT "\n",
