@@ -16,26 +16,32 @@ let lexemeAsString lexbuf =
 
 let keyword s =
     match s with
-    | "car"     -> CAR 
-    | "cdr"     -> CDR 
-    | "char"    -> CHAR 
-    | "cons"    -> CONS 
-    | "dynamic" -> DYNAMIC
-    | "else"    -> ELSE
-    | "false"   -> CSTBOOL 0
-    | "if"      -> IF
-    | "int"     -> INT
-    | "nil"     -> NIL
-    | "null"    -> NULL
-    | "print"   -> PRINT
-    | "println" -> PRINTLN
-    | "return"  -> RETURN
-    | "setcar"  -> SETCAR
-    | "setcdr"  -> SETCDR     
-    | "true"    -> CSTBOOL 1
-    | "void"    -> VOID 
-    | "while"   -> WHILE         
-    | _         -> NAME s
+    | "car"         -> CAR 
+    | "cdr"         -> CDR 
+    | "char"        -> CHAR 
+    | "cons"        -> CONS 
+    | "dynamic"     -> DYNAMIC
+    // List C opgave 1:
+    | "createStack" -> CREATESTACK
+    | "pushStack"   -> PUSHSTACK
+    | "popStack"    -> POPSTACK
+    | "printStack"  -> PRINTSTACK
+    // List C opgave 1 slut
+    | "else"        -> ELSE
+    | "false"       -> CSTBOOL 0
+    | "if"          -> IF
+    | "int"         -> INT
+    | "nil"         -> NIL
+    | "null"        -> NULL
+    | "print"       -> PRINT
+    | "println"     -> PRINTLN
+    | "return"      -> RETURN
+    | "setcar"      -> SETCAR
+    | "setcdr"      -> SETCDR     
+    | "true"        -> CSTBOOL 1
+    | "void"        -> VOID 
+    | "while"       -> WHILE         
+    | _             -> NAME s
  
 let cEscape s = 
     match s with 

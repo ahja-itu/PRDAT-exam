@@ -47,6 +47,10 @@ type instr =
   | CDR                                (* get second field of cons cell   *)
   | SETCAR                             (* set first field of cons cell    *)
   | SETCDR                             (* set second field of cons cell   *)
+  | CREATESTACK of int                 (* creates a new stack of size N*)
+  | PUSHSTACK of int * int             (* Pushes value $snd into stack pointed to at $fst *)
+  | POPSTACK of int                    (* Pops from stack at address int *)
+  | PRINTSTACK of int                  (* Prints the stack at address int *)
 
 (* Generate new distinct labels *)
 
@@ -103,6 +107,10 @@ let CODECAR    = 28;
 let CODECDR    = 29;
 let CODESETCAR = 30;
 let CODESETCDR = 31;
+let CODECREATESTACK = 32;
+let CODEPUSHSTACK   = 33;
+let CODEPOPSTACK    = 34;
+let CODEPRINTSTACK  = 35;
 
 (* Bytecode emission, first pass: build environment that maps 
    each label to an integer address in the bytecode.
@@ -142,7 +150,10 @@ let makelabenv (addr, labenv) instr =
     | CAR            -> (addr+1, labenv)
     | CDR            -> (addr+1, labenv)
     | SETCAR         -> (addr+1, labenv)
-    | SETCDR         -> (addr+1, labenv)
+    | CREATESTACK(n)  -> (addr+2, labenv)
+    | PUSHSTACK(p, v) -> (addr+3, labenv)
+    | POPSTACK(p)     -> (addr+2, labenv)
+    | PRINTSTACK(p)   -> (addr+2, labenv)
 
 (* Bytecode emission, second pass: output bytecode as integers *)
 
@@ -181,6 +192,10 @@ let rec emitints getlab instr ints =
     | CDR            -> CODECDR    :: ints
     | SETCAR         -> CODESETCAR :: ints
     | SETCDR         -> CODESETCDR :: ints
+    | CREATESTACK(n)  -> CODECREATESTACK :: n :: ints
+    | PUSHSTACK(p, v) -> CODEPUSHSTACK :: p :: v :: ints
+    | POPSTACK(p)     -> CODEPOPSTACK :: p :: ints
+    | PRINTSTACK(p)   -> CODEPRINTSTACK :: p :: ints
 
 
 (* Convert instruction list to int list in two passes:

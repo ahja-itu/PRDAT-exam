@@ -26,6 +26,7 @@ let fromFile (filename : string) =
     let lexbuf = (*Lexing.*)LexBuffer<char>.FromTextReader reader
     try 
       CPar.Main CLex.Token lexbuf
+      |> fun tree -> printfn "%A" tree; tree
     with 
       | exn -> let pos = lexbuf.EndPos 
                failwithf "%s in file %s near line %d, column %d\n" 

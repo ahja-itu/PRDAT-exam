@@ -16,6 +16,7 @@ let nl = CstI 10
 
 %token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE
 %token NIL CONS CAR CDR DYNAMIC SETCAR SETCDR
+%token CREATESTACK PUSHSTACK POPSTACK PRINTSTACK
 %token PLUS MINUS TIMES DIV MOD
 %token EQ NE GT LT GE LE
 %token NOT SEQOR SEQAND
@@ -146,6 +147,10 @@ AtExprNotAccess:
   | CDR LPAR Expr RPAR                  { Prim1("cdr", $3)      }
   | SETCAR LPAR Expr COMMA Expr RPAR    { Prim2("setcar",$3,$5) }
   | SETCDR LPAR Expr COMMA Expr RPAR    { Prim2("setcdr",$3,$5) }
+  | CREATESTACK LPAR Expr RPAR          { Prim1("createStack", $3) }
+  | PUSHSTACK LPAR Expr COMMA Expr RPAR { Prim2("pushStack", $3, $5) }
+  | POPSTACK LPAR Expr RPAR             { Prim1("popStack", $3) }
+  | PRINTSTACK LPAR Expr RPAR           { Prim1("printStack", $3) }
 ;
 
 Access:
