@@ -47,10 +47,10 @@ type instr =
   | CDR                                (* get second field of cons cell   *)
   | SETCAR                             (* set first field of cons cell    *)
   | SETCDR                             (* set second field of cons cell   *)
-  | CREATESTACK of int                 (* creates a new stack of size N*)
-  | PUSHSTACK of int * int             (* Pushes value $snd into stack pointed to at $fst *)
-  | POPSTACK of int                    (* Pops from stack at address int *)
-  | PRINTSTACK of int                  (* Prints the stack at address int *)
+  | CREATESTACK                        (* creates a new stack of size N*)
+  | PUSHSTACK                          (* Pushes value $snd into stack pointed to at $fst *)
+  | POPSTACK                           (* Pops from stack at address int *)
+  | PRINTSTACK                         (* Prints the stack at address int *)
 
 (* Generate new distinct labels *)
 
@@ -150,10 +150,10 @@ let makelabenv (addr, labenv) instr =
     | CAR            -> (addr+1, labenv)
     | CDR            -> (addr+1, labenv)
     | SETCAR         -> (addr+1, labenv)
-    | CREATESTACK(n)  -> (addr+2, labenv)
-    | PUSHSTACK(p, v) -> (addr+3, labenv)
-    | POPSTACK(p)     -> (addr+2, labenv)
-    | PRINTSTACK(p)   -> (addr+2, labenv)
+    | CREATESTACK    -> (addr+1, labenv)
+    | PUSHSTACK      -> (addr+1, labenv)
+    | POPSTACK       -> (addr+1, labenv)
+    | PRINTSTACK     -> (addr+1, labenv)
 
 (* Bytecode emission, second pass: output bytecode as integers *)
 
@@ -192,10 +192,10 @@ let rec emitints getlab instr ints =
     | CDR            -> CODECDR    :: ints
     | SETCAR         -> CODESETCAR :: ints
     | SETCDR         -> CODESETCDR :: ints
-    | CREATESTACK(n)  -> CODECREATESTACK :: n :: ints
-    | PUSHSTACK(p, v) -> CODEPUSHSTACK :: p :: v :: ints
-    | POPSTACK(p)     -> CODEPOPSTACK :: p :: ints
-    | PRINTSTACK(p)   -> CODEPRINTSTACK :: p :: ints
+    | CREATESTACK    -> CODECREATESTACK :: ints
+    | PUSHSTACK      -> CODEPUSHSTACK :: ints
+    | POPSTACK       -> CODEPOPSTACK :: ints
+    | PRINTSTACK     -> CODEPRINTSTACK :: ints
 
 
 (* Convert instruction list to int list in two passes:
