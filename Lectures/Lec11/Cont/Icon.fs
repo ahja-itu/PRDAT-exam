@@ -28,6 +28,7 @@ type expr =
   | CstI of int
   | CstS of string
   | FromTo of int * int
+  | FromToChar of char * char (* Icon Opgave 4 *)
   | Write of expr
   | If of expr * expr * expr
   | Prim of string * expr * expr 
@@ -67,6 +68,13 @@ let rec eval (e : expr) (cont : cont) (econt : econt) =
           else 
               econt ()
       loop i1
+    | FromToChar(c1, c2) -> // Icon opgave 4
+      let rec loop c1' =
+        if c1' <= c2 then
+          cont (Str (string c1')) (fun () -> loop (c1' + char 1))
+        else
+          econt ()
+      loop c1
     | Write e -> 
       eval e (fun v -> fun econt1 -> (write v; cont v econt1)) econt
     | If(e1, e2, e3) -> 
