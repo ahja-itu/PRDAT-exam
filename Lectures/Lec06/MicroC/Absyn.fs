@@ -11,6 +11,7 @@ type typ =
   | TypI                             (* Type int                    *)
   | TypC                             (* Type char                   *)
   | TypA of typ * int option         (* Array type                  *)
+  | TypT of typ * int option         (* Tuple type                  *)
   | TypP of typ                      (* Pointer type                *)
                                                                    
 and expr =                                                         
@@ -28,6 +29,7 @@ and access =
   | AccVar of string                 (* Variable access        x    *) 
   | AccDeref of expr                 (* Pointer dereferencing  *p   *)
   | AccIndex of access * expr        (* Array indexing         a[e] *)
+  | TupIndex of access * expr        (* Tuple indexing       a(|e|) *)
                                                                    
 and stmt =                                                         
   | If of expr * stmt * stmt         (* Conditional                 *)
