@@ -4,6 +4,8 @@ type token =
   | EOF
   | LPAR
   | RPAR
+  | LBRACKET
+  | RBRACKET
   | EQ
   | NE
   | GT
@@ -15,6 +17,7 @@ type token =
   | TIMES
   | DIV
   | MOD
+  | LISTAPPEND
   | ELSE
   | END
   | FALSE
@@ -24,6 +27,7 @@ type token =
   | NOT
   | THEN
   | TRUE
+  | COMMA
   | CSTBOOL of (bool)
   | NAME of (string)
   | CSTINT of (int)
@@ -31,6 +35,8 @@ type tokenId =
     | TOKEN_EOF
     | TOKEN_LPAR
     | TOKEN_RPAR
+    | TOKEN_LBRACKET
+    | TOKEN_RBRACKET
     | TOKEN_EQ
     | TOKEN_NE
     | TOKEN_GT
@@ -42,6 +48,7 @@ type tokenId =
     | TOKEN_TIMES
     | TOKEN_DIV
     | TOKEN_MOD
+    | TOKEN_LISTAPPEND
     | TOKEN_ELSE
     | TOKEN_END
     | TOKEN_FALSE
@@ -51,6 +58,7 @@ type tokenId =
     | TOKEN_NOT
     | TOKEN_THEN
     | TOKEN_TRUE
+    | TOKEN_COMMA
     | TOKEN_CSTBOOL
     | TOKEN_NAME
     | TOKEN_CSTINT
@@ -60,6 +68,9 @@ type nonTerminalId =
     | NONTERM__startMain
     | NONTERM_Main
     | NONTERM_Expr
+    | NONTERM_ListExpr
+    | NONTERM_ListElement
+    | NONTERM_List
     | NONTERM_AtExpr
     | NONTERM_AppExpr
     | NONTERM_Const
