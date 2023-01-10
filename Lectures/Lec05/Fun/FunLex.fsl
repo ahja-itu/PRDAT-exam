@@ -53,8 +53,12 @@ rule Token = parse
   | '*'             { TIMES }                     
   | '/'             { DIV }                     
   | '%'             { MOD }
+  | "@"             { LISTAPPEND }
+  | ','             { COMMA }
   | '('             { LPAR }
   | ')'             { RPAR }
+  | '['             { LBRACKET }
+  | ']'             { RBRACKET }
   | eof             { EOF }
   | _               { failwith "Lexer error: illegal symbol" }
 

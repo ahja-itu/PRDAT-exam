@@ -30,6 +30,7 @@ let rec lookup env x =
 type value = 
   | Int of int
   | Closure of string * string * expr * value env       (* (f, x, fBody, fDeclEnv) *)
+  | ListV of value list (* support evaluation of functions *)
 
 let rec eval (e : expr) (env : value env) : value =
     match e with
@@ -44,12 +45,20 @@ let rec eval (e : expr) (env : value env) : value =
       | ("+", Int i1, Int i2) -> Int (i1 + i2)
       | ("-", Int i1, Int i2) -> Int (i1 - i2)
       | ("=", Int i1, Int i2) -> Int (if i1 = i2 then 1 else 0)
+      | ("=", ListV lst1, ListV lst2) -> Int (if lst1 = lst2 then 1 else 0)
       | ("<", Int i1, Int i2) -> Int (if i1 < i2 then 1 else 0)
+      | ("@", ListV lst1, ListV lst2) -> ListV (lst1 @ lst2)
       |  _ -> failwith "unknown primitive or wrong type"
     | Let(x, eRhs, letBody) -> 
       let xVal = eval eRhs env
       let letEnv = (x, xVal) :: env 
       eval letBody letEnv
+
+    | List(lst) ->
+      // Evaluer alle elementerne i listen i miljøet env
+      let lstElements = List.map (fun e -> eval e env) lst
+
+      ListV (lstElements)
     | If(e1, e2, e3) -> 
       match eval e1 env with
       | Int 0 -> eval e3 env
