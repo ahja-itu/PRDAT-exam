@@ -75,6 +75,15 @@ let allocate (kind : int -> var) (typ, x) (varEnv : varEnv) : varEnv * instr lis
       let newEnv = ((x, (kind (fdepth+i), typ)) :: env, fdepth+i+1)  
       let code = [INCSP i; GETSP; CSTI (i-1); SUB]
       (newEnv, code)
+    | TypT (_, Some i) ->
+      // Not sure about setting up new env...
+      // removed +1 from right most expr because no space to keep track of the tuple size
+      let newEnv = ((x, (kind (fdepth + i), typ)) :: env, fdepth+i)
+      
+      // forøg stakpegeren og efterlad adressen til tuplen på stakken
+      let code = [INCSP i]
+
+      (newEnv, code)
     | _ -> 
       let newEnv = ((x, (kind (fdepth), typ)) :: env, fdepth+1)
       let code = [INCSP 1]
@@ -219,6 +228,12 @@ and cAccess access varEnv funEnv : instr list =
     | AccDeref e -> cExpr e varEnv funEnv
     | AccIndex(acc, idx) -> cAccess acc varEnv funEnv 
                             @ [LDI] @ cExpr idx varEnv funEnv @ [ADD]
+
+    | TupIndex(acc, idx) -> 
+        // cAccess acc (..) finder adressen til vores tuple, men lægger også base pegeren til.
+        // Det skal vi have modvirket, så vi trækker base pegeren fra igen lige efter
+        cAccess acc varEnv funEnv @ [GETBP; SUB]
+        @ cExpr idx varEnv funEnv @ [ADD]
 
 (* Generate code to evaluate a list es of expressions: *)
 
