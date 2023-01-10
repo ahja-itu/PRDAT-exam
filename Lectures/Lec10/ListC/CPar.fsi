@@ -26,6 +26,10 @@ type token =
   | TIMES
   | DIV
   | MOD
+  | CREATESTACK
+  | PUSHSTACK
+  | POPSTACK
+  | PRINTSTACK
   | NIL
   | CONS
   | CAR
@@ -73,6 +77,10 @@ type tokenId =
     | TOKEN_TIMES
     | TOKEN_DIV
     | TOKEN_MOD
+    | TOKEN_CREATESTACK
+    | TOKEN_PUSHSTACK
+    | TOKEN_POPSTACK
+    | TOKEN_PRINTSTACK
     | TOKEN_NIL
     | TOKEN_CONS
     | TOKEN_CAR
